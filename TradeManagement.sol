@@ -319,12 +319,12 @@ contract TradeManagement is ReentrancyGuard{
         ProducerPackagedProductsMintingBalance[_producer][_tokenID] -= _numberofmints;
     }
 
-        function LinkParentNFTtoChild1NFT (uint256 _parentID, uint256 _childID) external onlyPackagedProductsSmartContract{
-        require(parentToChild1positioncounter[_parentID] <= 5, "Cannot add more child NFTs to this parent NFT because the max capacity is reached");
+        function LinkParentNFTtoChild1NFT (uint256 _childID, uint256 _parentID) external onlyPackagedProductsSmartContract{
+        require(parentToChild1positioncounter[_childID] <= 5, "Cannot add more parent NFTs to this child NFT because the max capacity is reached");
 
-        parentToChildTokenId1[_parentID][parentToChild1positioncounter[_parentID]] = _childID ; //IF mapping instead of array ==>  parentToChildTokenId1[RawMaterial.tokenID][_childID] = true;
+        parentToChildTokenId1[_childID][parentToChild1positioncounter[_childID]] = _parentID ; //IF mapping instead of array ==>  parentToChildTokenId1[RawMaterial.tokenID][_childID] = true;
 
-        parentToChild1positioncounter[_parentID] += 1;    
+        parentToChild1positioncounter[_childID] += 1;    
     }
 
     function CreateLot(uint256[5] memory _tokenIDs, string memory _tokenURI) external onlyProducer{
