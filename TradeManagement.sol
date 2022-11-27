@@ -248,17 +248,6 @@ contract TradeManagement is ReentrancyGuard{
         emit RawMaterialNFTAuctionStarted(RawMaterialsCount, address(RawMaterialsSmartContract), _tokenID, RawMaterialAuctionEndTime[RawMaterialsCount], msg.sender);
     }
 
-    //function WithdrawRawMaterialNFT(uint256 _RawMaterialsCount) external nonReentrant{
-    //    RawMaterialNFT storage RawMaterial = RawMaterialsMapping[_RawMaterialsCount];
-    //    require(msg.sender == RawMaterial.RawMaterialOwner, "Only the original owner of the NFT can withdraw");
-    //    require(RawMaterialAuctionEnded[RawMaterial.RawMaterialID], "Cannot withdraw while the auction is active");
-
-    //    RawMaterialsSmartContract.transferFrom(address(this), msg.sender, RawMaterial.tokenID);
-    //    delete RawMaterialsMapping[_RawMaterialsCount];
-
-    //    emit RawMaterialNFTDelisted(RawMaterial.RawMaterialID, address(RawMaterial.nftSC), RawMaterial.tokenID, msg.sender);
-    //}
-
     function RawMaterialNFTPlaceBid(uint256 _RawMaterialsCount) external payable nonReentrant onlyProducer{
         RawMaterialNFT storage RawMaterial = RawMaterialsMapping[_RawMaterialsCount];
         require(_RawMaterialsCount > 0 && _RawMaterialsCount <= RawMaterialsCount, "The entered Rawmaterial number is invalid");
