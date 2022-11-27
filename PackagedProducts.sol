@@ -29,28 +29,25 @@ contract PackagedProducts is ERC721URIStorage, Ownable{
 
     }
 
-    function mint(string memory _tokenURI, uint256 _parentID) external returns(uint) {
+    function mint(string memory _tokenURI, uint256 _childtID) external returns(uint) {
         require(TradeManagement.Producer(msg.sender) == true, "Only authorized producer can mint packaged product NFT");
-        require(TradeManagement.ProducerRawMaterialMapping(_parentID) == msg.sender, "The specified parent ID does not belong to the caller");
-        require(TradeManagement.ProducerPackagedProductsMintingBalance(msg.sender, _parentID) > 0, "The caller does not have enough minting balance");
-
-       // GenomicsDataManagement.UpdateSequencedNFTMintingBalance(msg.sender, _parentID); //The minting balance of msg.sender is decreased by 1
+        require(TradeManagement.ProducerRawMaterialMapping(_childID) == msg.sender, "The specified parent ID does not belong to the caller");
+        require(TradeManagement.ProducerPackagedProductsMintingBalance(msg.sender, _childID) > 0, "The caller does not have enough minting balance");
+        
         tokenCount++;
         _safeMint(msg.sender, tokenCount); 
         _setTokenURI(tokenCount, _tokenURI);
-        TradeManagement.LinkParentNFTtoChild1NFT(_parentID, tokenCount);
-        TradeManagement.UpdateProducerMintingBalance(msg.sender, _parentID, 1);
-
-        //GenomicsDataManagement.LinkChildNFTtoParentNFT(_parentID, tokenCount); //Calls the linkage function in the mgmt smart contract
-
+        TradeManagement.LinkParentNFTtoChild1NFT(_childID, tokenCount);
+        TradeManagement.UpdateProducerMintingBalance(msg.sender, _childID, 1);
+        
         return(tokenCount);
     } 
 
-        function mintAll(string[] memory _tokenURI, uint256 _parentID) external returns(uint) {
+        function mintAll(string[] memory _tokenURI, uint256 _childID) external returns(uint) {
         require(TradeManagement.Producer(msg.sender) == true, "Only authorized producer can mint packaged product NFT");
-        require(TradeManagement.ProducerRawMaterialMapping(_parentID) == msg.sender, "The specified parent ID does not belong to the caller");
-        require(TradeManagement.ProducerPackagedProductsMintingBalance(msg.sender, _parentID) > 0, "The caller does not have enough minting balance");
-        require(_tokenURI.length <= TradeManagement.ProducerPackagedProductsMintingBalance(msg.sender, _parentID), "Invalid number of URIs");
+        require(TradeManagement.ProducerRawMaterialMapping(_childID) == msg.sender, "The specified parent ID does not belong to the caller");
+        require(TradeManagement.ProducerPackagedProductsMintingBalance(msg.sender, _childID) > 0, "The caller does not have enough minting balance");
+        require(_tokenURI.length <= TradeManagement.ProducerPackagedProductsMintingBalance(msg.sender, _childID), "Invalid number of URIs");
 
         for(uint256 i = 0; i <_tokenURI.length; i++){
             tokenCount++;
@@ -60,7 +57,7 @@ contract PackagedProducts is ERC721URIStorage, Ownable{
 
         } 
 
-        TradeManagement.UpdateProducerMintingBalance(msg.sender, _parentID, _tokenURI.length);
+        TradeManagement.UpdateProducerMintingBalance(msg.sender, _childID, _tokenURI.length);
        
         
         return(tokenCount);
