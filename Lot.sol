@@ -35,8 +35,6 @@ contract Lot is ERC721URIStorage, Ownable{
         _setTokenURI(tokenCount, _tokenURI);
         TradeManagement.LinkParentNFTtoChild2NFT(tokenCount, _childIDs);
 
-        //GenomicsDataManagement.LinkChildNFTtoParentNFT(_parentID, tokenCount); //Calls the linkage function in the mgmt smart contract
-
         return(tokenCount);
     } 
 
